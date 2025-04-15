@@ -48,6 +48,14 @@ module.exports = function (sequelize, DataTypes) {
       constraints: false,
     });
 
+    db.payments.hasMany(db.orders_test, {
+      as: 'orders_test_payment',
+      foreignKey: {
+        name: 'paymentId',
+      },
+      constraints: false,
+    });
+
     //end loop
 
     db.payments.belongsTo(db.orders, {

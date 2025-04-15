@@ -143,6 +143,45 @@ const CustomersView = () => {
             </CardBox>
           </>
 
+          <>
+            <p className={'block font-bold mb-2'}>Orders_test Customer</p>
+            <CardBox
+              className='mb-6 border border-gray-300 rounded overflow-hidden'
+              hasTable
+            >
+              <div className='overflow-x-auto'>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Order date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {customers.orders_test_customer &&
+                      Array.isArray(customers.orders_test_customer) &&
+                      customers.orders_test_customer.map((item: any) => (
+                        <tr
+                          key={item.id}
+                          onClick={() =>
+                            router.push(
+                              `/orders_test/orders_test-view/?id=${item.id}`,
+                            )
+                          }
+                        >
+                          <td data-label='order_date'>
+                            {dataFormatter.dateTimeFormatter(item.order_date)}
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+              {!customers?.orders_test_customer?.length && (
+                <div className={'text-center py-4'}>No data</div>
+              )}
+            </CardBox>
+          </>
+
           <BaseDivider />
 
           <BaseButton

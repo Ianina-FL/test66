@@ -107,6 +107,45 @@ const PaymentsView = () => {
             </CardBox>
           </>
 
+          <>
+            <p className={'block font-bold mb-2'}>Orders_test Payment</p>
+            <CardBox
+              className='mb-6 border border-gray-300 rounded overflow-hidden'
+              hasTable
+            >
+              <div className='overflow-x-auto'>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Order date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {payments.orders_test_payment &&
+                      Array.isArray(payments.orders_test_payment) &&
+                      payments.orders_test_payment.map((item: any) => (
+                        <tr
+                          key={item.id}
+                          onClick={() =>
+                            router.push(
+                              `/orders_test/orders_test-view/?id=${item.id}`,
+                            )
+                          }
+                        >
+                          <td data-label='order_date'>
+                            {dataFormatter.dateTimeFormatter(item.order_date)}
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+              {!payments?.orders_test_payment?.length && (
+                <div className={'text-center py-4'}>No data</div>
+              )}
+            </CardBox>
+          </>
+
           <BaseDivider />
 
           <BaseButton

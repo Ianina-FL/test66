@@ -85,6 +85,14 @@ const menuAside: MenuAsideItem[] = [
     permissions: 'READ_PERMISSIONS',
   },
   {
+    href: '/orders_test/orders_test-list',
+    label: 'Orders test',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    icon: icon.mdiTable ? icon.mdiTable : icon.mdiTable,
+    permissions: 'READ_ORDERS_TEST',
+  },
+  {
     href: '/profile',
     label: 'Profile',
     icon: icon.mdiAccountCircle,

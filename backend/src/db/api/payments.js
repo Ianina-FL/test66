@@ -146,6 +146,10 @@ module.exports = class PaymentsDBApi {
       transaction,
     });
 
+    output.orders_test_payment = await payments.getOrders_test_payment({
+      transaction,
+    });
+
     output.order = await payments.getOrder({
       transaction,
     });

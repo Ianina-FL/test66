@@ -5,8 +5,8 @@ const bcrypt = require('bcrypt');
 const moment = require('moment');
 
 module.exports = function (sequelize, DataTypes) {
-  const customers = sequelize.define(
-    'customers',
+  const orders_test = sequelize.define(
+    'orders_test',
     {
       id: {
         type: DataTypes.UUID,
@@ -14,16 +14,8 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      first_name: {
-        type: DataTypes.TEXT,
-      },
-
-      last_name: {
-        type: DataTypes.TEXT,
-      },
-
-      email: {
-        type: DataTypes.TEXT,
+      order_date: {
+        type: DataTypes.DATE,
       },
 
       importHash: {
@@ -39,53 +31,53 @@ module.exports = function (sequelize, DataTypes) {
     },
   );
 
-  customers.associate = (db) => {
-    db.customers.belongsToMany(db.orders, {
-      as: 'orders',
+  orders_test.associate = (db) => {
+    db.orders_test.belongsToMany(db.coffee_blends, {
+      as: 'coffee_blends',
       foreignKey: {
-        name: 'customers_ordersId',
+        name: 'orders_test_coffee_blendsId',
       },
       constraints: false,
-      through: 'customersOrdersOrders',
+      through: 'orders_testCoffee_blendsCoffee_blends',
     });
 
-    db.customers.belongsToMany(db.orders, {
-      as: 'orders_filter',
+    db.orders_test.belongsToMany(db.coffee_blends, {
+      as: 'coffee_blends_filter',
       foreignKey: {
-        name: 'customers_ordersId',
+        name: 'orders_test_coffee_blendsId',
       },
       constraints: false,
-      through: 'customersOrdersOrders',
+      through: 'orders_testCoffee_blendsCoffee_blends',
     });
 
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
-    db.customers.hasMany(db.orders, {
-      as: 'orders_customer',
-      foreignKey: {
-        name: 'customerId',
-      },
-      constraints: false,
-    });
-
-    db.customers.hasMany(db.orders_test, {
-      as: 'orders_test_customer',
-      foreignKey: {
-        name: 'customerId',
-      },
-      constraints: false,
-    });
-
     //end loop
 
-    db.customers.belongsTo(db.users, {
+    db.orders_test.belongsTo(db.customers, {
+      as: 'customer',
+      foreignKey: {
+        name: 'customerId',
+      },
+      constraints: false,
+    });
+
+    db.orders_test.belongsTo(db.payments, {
+      as: 'payment',
+      foreignKey: {
+        name: 'paymentId',
+      },
+      constraints: false,
+    });
+
+    db.orders_test.belongsTo(db.users, {
       as: 'createdBy',
     });
 
-    db.customers.belongsTo(db.users, {
+    db.orders_test.belongsTo(db.users, {
       as: 'updatedBy',
     });
   };
 
-  return customers;
+  return orders_test;
 };

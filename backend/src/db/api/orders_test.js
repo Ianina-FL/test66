@@ -6,18 +6,16 @@ const Utils = require('../utils');
 const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
-module.exports = class CustomersDBApi {
+module.exports = class Orders_testDBApi {
   static async create(data, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const customers = await db.customers.create(
+    const orders_test = await db.orders_test.create(
       {
         id: data.id || undefined,
 
-        first_name: data.first_name || null,
-        last_name: data.last_name || null,
-        email: data.email || null,
+        order_date: data.order_date || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -25,11 +23,19 @@ module.exports = class CustomersDBApi {
       { transaction },
     );
 
-    await customers.setOrders(data.orders || [], {
+    await orders_test.setCustomer(data.customer || null, {
       transaction,
     });
 
-    return customers;
+    await orders_test.setPayment(data.payment || null, {
+      transaction,
+    });
+
+    await orders_test.setCoffee_blends(data.coffee_blends || [], {
+      transaction,
+    });
+
+    return orders_test;
   }
 
   static async bulkImport(data, options) {
@@ -37,12 +43,10 @@ module.exports = class CustomersDBApi {
     const transaction = (options && options.transaction) || undefined;
 
     // Prepare data - wrapping individual data transformations in a map() method
-    const customersData = data.map((item, index) => ({
+    const orders_testData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      first_name: item.first_name || null,
-      last_name: item.last_name || null,
-      email: item.email || null,
+      order_date: item.order_date || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -50,46 +54,58 @@ module.exports = class CustomersDBApi {
     }));
 
     // Bulk create items
-    const customers = await db.customers.bulkCreate(customersData, {
+    const orders_test = await db.orders_test.bulkCreate(orders_testData, {
       transaction,
     });
 
     // For each item created, replace relation files
 
-    return customers;
+    return orders_test;
   }
 
   static async update(id, data, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const customers = await db.customers.findByPk(id, {}, { transaction });
+    const orders_test = await db.orders_test.findByPk(id, {}, { transaction });
 
     const updatePayload = {};
 
-    if (data.first_name !== undefined)
-      updatePayload.first_name = data.first_name;
-
-    if (data.last_name !== undefined) updatePayload.last_name = data.last_name;
-
-    if (data.email !== undefined) updatePayload.email = data.email;
+    if (data.order_date !== undefined)
+      updatePayload.order_date = data.order_date;
 
     updatePayload.updatedById = currentUser.id;
 
-    await customers.update(updatePayload, { transaction });
+    await orders_test.update(updatePayload, { transaction });
 
-    if (data.orders !== undefined) {
-      await customers.setOrders(data.orders, { transaction });
+    if (data.customer !== undefined) {
+      await orders_test.setCustomer(
+        data.customer,
+
+        { transaction },
+      );
     }
 
-    return customers;
+    if (data.payment !== undefined) {
+      await orders_test.setPayment(
+        data.payment,
+
+        { transaction },
+      );
+    }
+
+    if (data.coffee_blends !== undefined) {
+      await orders_test.setCoffee_blends(data.coffee_blends, { transaction });
+    }
+
+    return orders_test;
   }
 
   static async deleteByIds(ids, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const customers = await db.customers.findAll({
+    const orders_test = await db.orders_test.findAll({
       where: {
         id: {
           [Op.in]: ids,
@@ -99,24 +115,24 @@ module.exports = class CustomersDBApi {
     });
 
     await db.sequelize.transaction(async (transaction) => {
-      for (const record of customers) {
+      for (const record of orders_test) {
         await record.update({ deletedBy: currentUser.id }, { transaction });
       }
-      for (const record of customers) {
+      for (const record of orders_test) {
         await record.destroy({ transaction });
       }
     });
 
-    return customers;
+    return orders_test;
   }
 
   static async remove(id, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const customers = await db.customers.findByPk(id, options);
+    const orders_test = await db.orders_test.findByPk(id, options);
 
-    await customers.update(
+    await orders_test.update(
       {
         deletedBy: currentUser.id,
       },
@@ -125,33 +141,36 @@ module.exports = class CustomersDBApi {
       },
     );
 
-    await customers.destroy({
+    await orders_test.destroy({
       transaction,
     });
 
-    return customers;
+    return orders_test;
   }
 
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const customers = await db.customers.findOne({ where }, { transaction });
+    const orders_test = await db.orders_test.findOne(
+      { where },
+      { transaction },
+    );
 
-    if (!customers) {
-      return customers;
+    if (!orders_test) {
+      return orders_test;
     }
 
-    const output = customers.get({ plain: true });
+    const output = orders_test.get({ plain: true });
 
-    output.orders_customer = await customers.getOrders_customer({
+    output.customer = await orders_test.getCustomer({
       transaction,
     });
 
-    output.orders_test_customer = await customers.getOrders_test_customer({
+    output.coffee_blends = await orders_test.getCoffee_blends({
       transaction,
     });
 
-    output.orders = await customers.getOrders({
+    output.payment = await orders_test.getPayment({
       transaction,
     });
 
@@ -172,8 +191,60 @@ module.exports = class CustomersDBApi {
 
     let include = [
       {
-        model: db.orders,
-        as: 'orders',
+        model: db.customers,
+        as: 'customer',
+
+        where: filter.customer
+          ? {
+              [Op.or]: [
+                {
+                  id: {
+                    [Op.in]: filter.customer
+                      .split('|')
+                      .map((term) => Utils.uuid(term)),
+                  },
+                },
+                {
+                  first_name: {
+                    [Op.or]: filter.customer
+                      .split('|')
+                      .map((term) => ({ [Op.iLike]: `%${term}%` })),
+                  },
+                },
+              ],
+            }
+          : {},
+      },
+
+      {
+        model: db.payments,
+        as: 'payment',
+
+        where: filter.payment
+          ? {
+              [Op.or]: [
+                {
+                  id: {
+                    [Op.in]: filter.payment
+                      .split('|')
+                      .map((term) => Utils.uuid(term)),
+                  },
+                },
+                {
+                  amount: {
+                    [Op.or]: filter.payment
+                      .split('|')
+                      .map((term) => ({ [Op.iLike]: `%${term}%` })),
+                  },
+                },
+              ],
+            }
+          : {},
+      },
+
+      {
+        model: db.coffee_blends,
+        as: 'coffee_blends',
         required: false,
       },
     ];
@@ -186,25 +257,28 @@ module.exports = class CustomersDBApi {
         };
       }
 
-      if (filter.first_name) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('customers', 'first_name', filter.first_name),
-        };
-      }
+      if (filter.order_dateRange) {
+        const [start, end] = filter.order_dateRange;
 
-      if (filter.last_name) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('customers', 'last_name', filter.last_name),
-        };
-      }
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            order_date: {
+              ...where.order_date,
+              [Op.gte]: start,
+            },
+          };
+        }
 
-      if (filter.email) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('customers', 'email', filter.email),
-        };
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            order_date: {
+              ...where.order_date,
+              [Op.lte]: end,
+            },
+          };
+        }
       }
 
       if (filter.active !== undefined) {
@@ -214,13 +288,13 @@ module.exports = class CustomersDBApi {
         };
       }
 
-      if (filter.orders) {
-        const searchTerms = filter.orders.split('|');
+      if (filter.coffee_blends) {
+        const searchTerms = filter.coffee_blends.split('|');
 
         include = [
           {
-            model: db.orders,
-            as: 'orders_filter',
+            model: db.coffee_blends,
+            as: 'coffee_blends_filter',
             required: searchTerms.length > 0,
             where:
               searchTerms.length > 0
@@ -232,7 +306,7 @@ module.exports = class CustomersDBApi {
                         },
                       },
                       {
-                        order_date: {
+                        name: {
                           [Op.or]: searchTerms.map((term) => ({
                             [Op.iLike]: `%${term}%`,
                           })),
@@ -289,7 +363,9 @@ module.exports = class CustomersDBApi {
     }
 
     try {
-      const { rows, count } = await db.customers.findAndCountAll(queryOptions);
+      const { rows, count } = await db.orders_test.findAndCountAll(
+        queryOptions,
+      );
 
       return {
         rows: options?.countOnly ? [] : rows,
@@ -308,22 +384,22 @@ module.exports = class CustomersDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('customers', 'first_name', query),
+          Utils.ilike('orders_test', 'id', query),
         ],
       };
     }
 
-    const records = await db.customers.findAll({
-      attributes: ['id', 'first_name'],
+    const records = await db.orders_test.findAll({
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
       offset: offset ? Number(offset) : undefined,
-      orderBy: [['first_name', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.first_name,
+      label: record.id,
     }));
   }
 };

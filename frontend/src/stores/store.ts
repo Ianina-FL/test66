@@ -13,6 +13,7 @@ import paymentsSlice from './payments/paymentsSlice';
 import reportsSlice from './reports/reportsSlice';
 import rolesSlice from './roles/rolesSlice';
 import permissionsSlice from './permissions/permissionsSlice';
+import orders_testSlice from './orders_test/orders_testSlice';
 
 export const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ export const store = configureStore({
     reports: reportsSlice,
     roles: rolesSlice,
     permissions: permissionsSlice,
+    orders_test: orders_testSlice,
   },
 });
 

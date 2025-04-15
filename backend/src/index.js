@@ -37,6 +37,8 @@ const rolesRoutes = require('./routes/roles');
 
 const permissionsRoutes = require('./routes/permissions');
 
+const orders_testRoutes = require('./routes/orders_test');
+
 const getBaseUrl = (url) => {
   if (!url) return '';
   return url.endsWith('/api') ? url.slice(0, -4) : url;
@@ -47,9 +49,9 @@ const options = {
     openapi: '3.0.0',
     info: {
       version: '1.0.0',
-      title: 'test66',
+      title: 'Test667',
       description:
-        'test66 Online REST API for Testing and Prototyping application. You can perform all major operations with your entities - create, delete and etc.',
+        'Test667 Online REST API for Testing and Prototyping application. You can perform all major operations with your entities - create, delete and etc.',
     },
     servers: [
       {
@@ -154,6 +156,12 @@ app.use(
   '/api/permissions',
   passport.authenticate('jwt', { session: false }),
   permissionsRoutes,
+);
+
+app.use(
+  '/api/orders_test',
+  passport.authenticate('jwt', { session: false }),
+  orders_testRoutes,
 );
 
 app.use(

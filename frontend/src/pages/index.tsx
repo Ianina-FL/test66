@@ -27,7 +27,7 @@ import ContactFormSection from '../components/WebPageComponents/ContactFormCompo
 export default function WebSite() {
   const cardsStyle = useAppSelector((state) => state.style.cardsStyle);
   const bgColor = useAppSelector((state) => state.style.bgLayoutColor);
-  const projectName = 'test66';
+  const projectName = 'Test667';
 
   useEffect(() => {
     const darkElement = document.querySelector('body .dark');
@@ -125,10 +125,10 @@ export default function WebSite() {
           content={`Discover the ultimate toolkit for managing your online coffee business. From inventory to customer management, streamline your operations and boost sales with our comprehensive solution.`}
         />
       </Head>
-      <WebSiteHeader projectName={'test66'} pages={pages} />
+      <WebSiteHeader projectName={'Test667'} pages={pages} />
       <main className={`flex-grow    bg-white  rounded-none  `}>
         <HeroSection
-          projectName={'test66'}
+          projectName={'Test667'}
           image={['Coffee beans and laptop']}
           mainText={`Elevate Your Coffee Business with ${projectName}`}
           subTitle={`Streamline your online coffee operations with ${projectName}. Manage inventory, orders, and customer interactions effortlessly to boost your sales and customer satisfaction.`}
@@ -137,9 +137,9 @@ export default function WebSite() {
         />
 
         <FeaturesSection
-          projectName={'test66'}
+          projectName={'Test667'}
           image={['Coffee shop management tools']}
-          withBg={1}
+          withBg={0}
           features={features_points}
           mainText={`Discover Key Features of ${projectName}`}
           subTitle={`Unlock the full potential of your coffee business with ${projectName}'s powerful features designed to streamline operations and enhance customer experience.`}
@@ -147,14 +147,14 @@ export default function WebSite() {
         />
 
         <TestimonialsSection
-          projectName={'test66'}
+          projectName={'Test667'}
           design={TestimonialsDesigns.HORIZONTAL_CAROUSEL || ''}
           testimonials={testimonials}
           mainText={`What Our Users Say About ${projectName} `}
         />
 
         <AboutUsSection
-          projectName={'test66'}
+          projectName={'Test667'}
           image={['Team collaborating over coffee']}
           mainText={`Meet the Vision Behind ${projectName}`}
           subTitle={`At ${projectName}, we are passionate about empowering coffee businesses to thrive. Our mission is to provide innovative tools that simplify operations and enhance customer experiences, ensuring your coffee business reaches new heights.`}
@@ -163,14 +163,14 @@ export default function WebSite() {
         />
 
         <ContactFormSection
-          projectName={'test66'}
+          projectName={'Test667'}
           design={ContactFormDesigns.WITH_IMAGE || ''}
           image={['Person typing on a laptop']}
           mainText={`Get in Touch with ${projectName} `}
           subTitle={`We're here to help! Reach out to us anytime with your questions or feedback. Our team at ${projectName} is committed to responding promptly to ensure your coffee business thrives.`}
         />
       </main>
-      <WebSiteFooter projectName={'test66'} pages={pages} />
+      <WebSiteFooter projectName={'Test667'} pages={pages} />
     </div>
   );
 }

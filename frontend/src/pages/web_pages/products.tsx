@@ -29,7 +29,7 @@ import ContactFormSection from '../../components/WebPageComponents/ContactFormCo
 export default function WebSite() {
   const cardsStyle = useAppSelector((state) => state.style.cardsStyle);
   const bgColor = useAppSelector((state) => state.style.bgLayoutColor);
-  const projectName = 'test66';
+  const projectName = 'Test667';
 
   useEffect(() => {
     const darkElement = document.querySelector('body .dark');
@@ -162,10 +162,10 @@ export default function WebSite() {
           content={`Discover a wide range of premium coffee blends tailored to satisfy every palate. From single-origin to espresso mixes, find the perfect brew for your customers.`}
         />
       </Head>
-      <WebSiteHeader projectName={'test66'} pages={pages} />
+      <WebSiteHeader projectName={'Test667'} pages={pages} />
       <main className={`flex-grow    bg-white  rounded-none  `}>
         <HeroSection
-          projectName={'test66'}
+          projectName={'Test667'}
           image={['Assorted coffee beans and cups']}
           mainText={`Discover Exquisite Coffee Blends with ${projectName}`}
           subTitle={`Explore our curated selection of premium coffee blends, crafted to delight every coffee enthusiast. With ${projectName}, find the perfect brew to elevate your offerings and satisfy your customers.`}
@@ -174,7 +174,7 @@ export default function WebSite() {
         />
 
         <FeaturesSection
-          projectName={'test66'}
+          projectName={'Test667'}
           image={['Coffee beans and digital tools']}
           withBg={1}
           features={features_points}
@@ -184,28 +184,28 @@ export default function WebSite() {
         />
 
         <GalleryPortfolioSection
-          projectName={'test66'}
+          projectName={'Test667'}
           images={images}
           mainText={`Explore Our Exquisite Coffee Collection`}
           design={GalleryPortfolioDesigns.OVERLAPPING_CENTRAL_IMAGE || ''}
         />
 
         <PricingSection
-          projectName={'test66'}
+          projectName={'Test667'}
           withBg={0}
           features={pricing_features}
           description={description}
         />
 
         <ContactFormSection
-          projectName={'test66'}
+          projectName={'Test667'}
           design={ContactFormDesigns.HIGHLIGHTED || ''}
           image={['Person typing on keyboard']}
           mainText={`Connect with ${projectName} Today `}
           subTitle={`Reach out to us anytime for inquiries or support. Our team at ${projectName} is ready to assist you with any questions or feedback.`}
         />
       </main>
-      <WebSiteFooter projectName={'test66'} pages={pages} />
+      <WebSiteFooter projectName={'Test667'} pages={pages} />
     </div>
   );
 }

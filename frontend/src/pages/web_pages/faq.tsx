@@ -21,7 +21,7 @@ import ContactFormSection from '../../components/WebPageComponents/ContactFormCo
 export default function WebSite() {
   const cardsStyle = useAppSelector((state) => state.style.cardsStyle);
   const bgColor = useAppSelector((state) => state.style.bgLayoutColor);
-  const projectName = 'test66';
+  const projectName = 'Test667';
 
   useEffect(() => {
     const darkElement = document.querySelector('body .dark');
@@ -98,10 +98,10 @@ export default function WebSite() {
           content={`Find answers to common questions about our application, its features, pricing, and more. Get the information you need to make the most of our services.`}
         />
       </Head>
-      <WebSiteHeader projectName={'test66'} pages={pages} />
+      <WebSiteHeader projectName={'Test667'} pages={pages} />
       <main className={`flex-grow    bg-white  rounded-none  `}>
         <HeroSection
-          projectName={'test66'}
+          projectName={'Test667'}
           image={['Person reading FAQ document']}
           mainText={`Your Questions Answered with ${projectName}`}
           subTitle={`Explore our comprehensive FAQ section to find answers to your most pressing questions about ${projectName}. Whether it's features, pricing, or support, we've got you covered.`}
@@ -110,21 +110,21 @@ export default function WebSite() {
         />
 
         <FaqSection
-          projectName={'test66'}
+          projectName={'Test667'}
           design={FaqDesigns.TWO_COLUMN || ''}
           faqs={faqs}
           mainText={`Common Questions About ${projectName} `}
         />
 
         <ContactFormSection
-          projectName={'test66'}
+          projectName={'Test667'}
           design={ContactFormDesigns.HIGHLIGHTED_DIVERSITY || ''}
           image={['Person typing on laptop']}
           mainText={`Reach Out to ${projectName} Support `}
           subTitle={`Have more questions? Contact us anytime, and our dedicated team at ${projectName} will respond promptly to assist you.`}
         />
       </main>
-      <WebSiteFooter projectName={'test66'} pages={pages} />
+      <WebSiteFooter projectName={'Test667'} pages={pages} />
     </div>
   );
 }

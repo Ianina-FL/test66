@@ -13,6 +13,8 @@ const Payments = db.payments;
 
 const Reports = db.reports;
 
+const OrdersTest = db.orders_test;
+
 const CategoriesData = [
   {
     name: 'Espresso',
@@ -24,10 +26,6 @@ const CategoriesData = [
 
   {
     name: 'Flavored',
-  },
-
-  {
-    name: 'Dark Roast',
   },
 ];
 
@@ -58,16 +56,6 @@ const CoffeeBlendsData = [
     price: 10.99,
 
     stock_level: 75,
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    name: 'Italian Dark Roast',
-
-    price: 11.99,
-
-    stock_level: 60,
 
     // type code here for "relation_one" field
   },
@@ -103,16 +91,6 @@ const CustomersData = [
 
     // type code here for "relation_many" field
   },
-
-  {
-    first_name: 'Bob',
-
-    last_name: 'Brown',
-
-    email: 'bob.brown@example.com',
-
-    // type code here for "relation_many" field
-  },
 ];
 
 const OrdersData = [
@@ -145,29 +123,11 @@ const OrdersData = [
 
     // type code here for "relation_one" field
   },
-
-  {
-    order_date: new Date('2023-10-04T09:15:00Z'),
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-  },
 ];
 
 const PaymentsData = [
   {
     amount: 25.98,
-
-    status: 'Pending',
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    amount: 14.99,
 
     status: 'Completed',
 
@@ -175,7 +135,7 @@ const PaymentsData = [
   },
 
   {
-    amount: 27.98,
+    amount: 14.99,
 
     status: 'Refunded',
 
@@ -183,7 +143,7 @@ const PaymentsData = [
   },
 
   {
-    amount: 11.99,
+    amount: 27.98,
 
     status: 'Completed',
 
@@ -209,11 +169,37 @@ const ReportsData = [
 
     // type code here for "relation_many" field
   },
+];
 
+const OrdersTestData = [
   {
-    generated_at: new Date('2023-10-09T08:00:00Z'),
+    order_date: new Date(Date.now()),
+
+    // type code here for "relation_one" field
 
     // type code here for "relation_many" field
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    order_date: new Date(Date.now()),
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    order_date: new Date(Date.now()),
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_one" field
   },
 ];
 
@@ -252,17 +238,6 @@ async function associateCoffeeBlendWithCategory() {
   if (CoffeeBlend2?.setCategory) {
     await CoffeeBlend2.setCategory(relatedCategory2);
   }
-
-  const relatedCategory3 = await Categories.findOne({
-    offset: Math.floor(Math.random() * (await Categories.count())),
-  });
-  const CoffeeBlend3 = await CoffeeBlends.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (CoffeeBlend3?.setCategory) {
-    await CoffeeBlend3.setCategory(relatedCategory3);
-  }
 }
 
 // Similar logic for "relation_many"
@@ -299,17 +274,6 @@ async function associateOrderWithCustomer() {
   });
   if (Order2?.setCustomer) {
     await Order2.setCustomer(relatedCustomer2);
-  }
-
-  const relatedCustomer3 = await Customers.findOne({
-    offset: Math.floor(Math.random() * (await Customers.count())),
-  });
-  const Order3 = await Orders.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Order3?.setCustomer) {
-    await Order3.setCustomer(relatedCustomer3);
   }
 }
 
@@ -348,17 +312,6 @@ async function associateOrderWithPayment() {
   if (Order2?.setPayment) {
     await Order2.setPayment(relatedPayment2);
   }
-
-  const relatedPayment3 = await Payments.findOne({
-    offset: Math.floor(Math.random() * (await Payments.count())),
-  });
-  const Order3 = await Orders.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Order3?.setPayment) {
-    await Order3.setPayment(relatedPayment3);
-  }
 }
 
 async function associatePaymentWithOrder() {
@@ -394,20 +347,81 @@ async function associatePaymentWithOrder() {
   if (Payment2?.setOrder) {
     await Payment2.setOrder(relatedOrder2);
   }
+}
 
-  const relatedOrder3 = await Orders.findOne({
-    offset: Math.floor(Math.random() * (await Orders.count())),
+// Similar logic for "relation_many"
+
+async function associateOrdersTestWithCustomer() {
+  const relatedCustomer0 = await Customers.findOne({
+    offset: Math.floor(Math.random() * (await Customers.count())),
   });
-  const Payment3 = await Payments.findOne({
+  const OrdersTest0 = await OrdersTest.findOne({
     order: [['id', 'ASC']],
-    offset: 3,
+    offset: 0,
   });
-  if (Payment3?.setOrder) {
-    await Payment3.setOrder(relatedOrder3);
+  if (OrdersTest0?.setCustomer) {
+    await OrdersTest0.setCustomer(relatedCustomer0);
+  }
+
+  const relatedCustomer1 = await Customers.findOne({
+    offset: Math.floor(Math.random() * (await Customers.count())),
+  });
+  const OrdersTest1 = await OrdersTest.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (OrdersTest1?.setCustomer) {
+    await OrdersTest1.setCustomer(relatedCustomer1);
+  }
+
+  const relatedCustomer2 = await Customers.findOne({
+    offset: Math.floor(Math.random() * (await Customers.count())),
+  });
+  const OrdersTest2 = await OrdersTest.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (OrdersTest2?.setCustomer) {
+    await OrdersTest2.setCustomer(relatedCustomer2);
   }
 }
 
 // Similar logic for "relation_many"
+
+async function associateOrdersTestWithPayment() {
+  const relatedPayment0 = await Payments.findOne({
+    offset: Math.floor(Math.random() * (await Payments.count())),
+  });
+  const OrdersTest0 = await OrdersTest.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (OrdersTest0?.setPayment) {
+    await OrdersTest0.setPayment(relatedPayment0);
+  }
+
+  const relatedPayment1 = await Payments.findOne({
+    offset: Math.floor(Math.random() * (await Payments.count())),
+  });
+  const OrdersTest1 = await OrdersTest.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (OrdersTest1?.setPayment) {
+    await OrdersTest1.setPayment(relatedPayment1);
+  }
+
+  const relatedPayment2 = await Payments.findOne({
+    offset: Math.floor(Math.random() * (await Payments.count())),
+  });
+  const OrdersTest2 = await OrdersTest.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (OrdersTest2?.setPayment) {
+    await OrdersTest2.setPayment(relatedPayment2);
+  }
+}
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -422,6 +436,8 @@ module.exports = {
     await Payments.bulkCreate(PaymentsData);
 
     await Reports.bulkCreate(ReportsData);
+
+    await OrdersTest.bulkCreate(OrdersTestData);
 
     await Promise.all([
       // Similar logic for "relation_many"
@@ -439,6 +455,12 @@ module.exports = {
       await associatePaymentWithOrder(),
 
       // Similar logic for "relation_many"
+
+      await associateOrdersTestWithCustomer(),
+
+      // Similar logic for "relation_many"
+
+      await associateOrdersTestWithPayment(),
     ]);
   },
 
@@ -454,5 +476,7 @@ module.exports = {
     await queryInterface.bulkDelete('payments', null, {});
 
     await queryInterface.bulkDelete('reports', null, {});
+
+    await queryInterface.bulkDelete('orders_test', null, {});
   },
 };
